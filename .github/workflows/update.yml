@@ -1,0 +1,39 @@
+name: README build
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "0 3 * * *"
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Get Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests python-dateutil lxml python-dotenv
+
+      - name: Update README file
+        env:
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          USER_NAME: ${{ secrets.USER_NAME }}
+        run: python main.py
+
+      - name: Commit
+        run: |
+          git config --global user.email "neo999in@gmail.com"
+          git config --global user.name "GitHub-Actions-Bot"
+          git add .
+          git commit -m "Updated README" || echo "No changes to commit"
+          git push
