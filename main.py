@@ -1,3 +1,4 @@
+import base64
 import datetime
 import hashlib
 import os
@@ -450,7 +451,6 @@ def flush_cache(edges, filename, comment_size):
             handle.write(f"{repository_hash} 0 0 0 0\n")
 
 
-
 # Persist partially updated cache data before raising from a failed long-running LOC calculation.
 def force_close_file(cache_rows, cache_header):
     filename = cache_file_path()
@@ -663,6 +663,28 @@ def update_svg_files(
         )
 
 
+# Read each icon SVG from the assets folder, base64-encode it, and write it into
+# the matching <image> element in every output SVG file.
+def embed_local_icons(svg_files):
+    icon_files = [
+        ("assets/icons_row1.svg", "icons_row1"),
+        ("assets/icons_row2.svg", "icons_row2"),
+        ("assets/icons_row3.svg", "icons_row3"),
+        ("assets/icons_row4.svg", "icons_row4"),
+    ]
+    for icon_file, element_id in icon_files:
+        with open(icon_file, "rb") as f:
+            b64 = base64.b64encode(f.read()).decode()
+        data_uri = "data:image/svg+xml;base64," + b64
+        for svg in svg_files:
+            tree = parse(svg)
+            root = tree.getroot()
+            element = root.find(f".//*[@id='{element_id}']")
+            if element is not None:
+                element.set("href", data_uri)
+            tree.write(svg, encoding="utf-8", xml_declaration=True)
+
+
 # Main pipeline:
 # 1. load credentials
 # 2. fetch GitHub stats
@@ -725,6 +747,8 @@ def main():
         follower_data,
         total_loc[:-1],
     )
+
+    embed_local_icons(SVG_FILES)
 
     total_runtime = (
         user_time
