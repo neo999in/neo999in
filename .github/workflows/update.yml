@@ -32,7 +32,7 @@ jobs:
 
       - name: Commit
         run: |
-          git config --global user.email "action-bot@neo999in.github.io"
+          git config --global user.email "actions-bot@neo999in.github.io"
           git config --global user.name "neo999in/GitHub-Actions-Bot"
           git add .
           git commit -m "Updated README" || echo "No changes to commit"
