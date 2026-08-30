@@ -25,7 +25,7 @@ CACHE_COMMENT_LINE = "This line is a comment block. Write whatever you want here
 # Visual widths used when inserting dot padding in the SVG text fields.
 AGE_DATA_WIDTH = 49
 COMMIT_DATA_WIDTH = 22
-LOC_DATA_WIDTH = 25
+LOC_DATA_WIDTH = 15
 FOLLOWER_DATA_WIDTH = 10
 REPO_DATA_WIDTH = 7
 STAR_DATA_WIDTH = 14
@@ -489,7 +489,7 @@ def svg_overwrite(
     justify_format(root, "repo_data", repo_data, REPO_DATA_WIDTH)
     justify_format(root, "contrib_data", contrib_data)
     justify_format(root, "follower_data", follower_data, FOLLOWER_DATA_WIDTH)
-    justify_format(root, "loc_data", loc_data[2], 9)
+    justify_format(root, "loc_data", loc_data[2], LOC_DATA_WIDTH)
     justify_format(root, "loc_add", loc_data[0])
     justify_format(root, "loc_del", loc_data[1])
     find_and_replace(
