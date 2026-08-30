@@ -25,7 +25,7 @@ CACHE_COMMENT_LINE = "This line is a comment block. Write whatever you want here
 # Visual widths used when inserting dot padding in the SVG text fields.
 AGE_DATA_WIDTH = 49
 COMMIT_DATA_WIDTH = 22
-LOC_DATA_WIDTH = 25
+LOC_DATA_WIDTH = 45
 FOLLOWER_DATA_WIDTH = 10
 REPO_DATA_WIDTH = 7
 STAR_DATA_WIDTH = 14
